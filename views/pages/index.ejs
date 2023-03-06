@@ -1,0 +1,76 @@
+<% extend('../templates/body') %>
+<h3>Folders & Files</h3>
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <%= library_active %>
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <%- library_readme %>
+                <% if (library_questions) { %>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Latihan Soal
+                </button>
+                <!-- Modal -->
+                <div class="modal fade modal-xl" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Latihan <small class="text-muted">'
+                                        <%= library_active %>'</small></h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Folder ini memiliki sebanyak
+                                    <%= library_questions.length %> soal.</p>
+                                <hr>
+                                <div class="accordion accordion-flush" id="accordionFlushExample">
+                                    <% for (const [index, question] of library_questions.entries()) { %>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-headingOne">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse-<%= index %>" aria-expanded="false" aria-controls="flush-collapse-<%= index %>">
+                                                <span class="text-muted">#
+                                                    <%= index + 1; %></span>
+                                                <%= question.question %>
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapse-<%= index %>" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <h6>Jawaban:</h6>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <%= question.answer %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="list-group">
+    <% for (const folder of library_folders) { %>
+    <a href="?folder=<%= library_active + "/" + folder %>" class="list-group-item list-group-item-action">
+        <%= folder %></a>
+    <% } %>
+    <% for (const file of library_files) { %>
+    <a href="/markdown?file=<%= library_active + "/" + file %>" class="list-group-item list-group-item-action">
+        <%= file %></a>
+    <% } %>
+</div>
